@@ -42,11 +42,11 @@ const DEFAULT_RULES = {
   },
 
   hardbreak() {
-    return '\n';
+    return '\n\n';
   },
 
   softbreak(token, attrs, children, options) {
-    return '\n';
+    return options.breaks ? '\n\n' : '\n';
   },
 
   text(token) {
