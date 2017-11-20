@@ -1,7 +1,8 @@
 'use strict';
 
 import markdown from 'markdown-it';
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import isPlainObject from 'lodash/lang/isPlainObject';
 import assign from 'lodash/object/assign';
 import reduce from 'lodash/collection/reduce';
@@ -117,7 +118,7 @@ function mdReactFactory(options={}) {
     onGenerateKey=(tag, index) => `mdrct-${tag}-${index}`,
     className } = options;
 
-  let md = markdown(markdownOptions || presetName)
+  let md = markdown(presetName || 'default', markdownOptions)
     .enable(enableRules)
     .disable(disableRules);
 
@@ -130,23 +131,32 @@ function mdReactFactory(options={}) {
     md
   );
 
+  let defaultProps;
+
   function iterateTree(tree, level=0, index=0) {
     let tag = tree.shift();
     const key = onGenerateKey(tag, index);
+    const props = { ...defaultProps, key };
 
-    const props = (tree.length && isPlainObject(tree[0])) ?
-      assign(tree.shift(), { key }) :
-      { key };
+    if (tree.length && isPlainObject(tree[0])) {
+      assign(props, tree.shift());
+    }
 
     if (level === 0 && className) {
       props.className = className;
     }
 
-    const children = tree.map(
+    let children = tree.map(
       (branch, idx) => Array.isArray(branch) ?
         iterateTree(branch, level + 1, idx) :
         branch
     );
+
+    // Don't pass empty children array to void elements like img,
+    // otherwise react will warn you.
+    if (!children.length) {
+      children = undefined;
+    }
 
     tag = tags[tag] || tag;
 
@@ -163,7 +173,8 @@ function mdReactFactory(options={}) {
       React.createElement(tag, props, children);
   }
 
-  return function(text) {
+  return function(text, props) {
+    defaultProps = props;
     const tree = convertTree(md.parse(text, {}), convertRules, md.options);
     return iterateTree(tree);
   };
