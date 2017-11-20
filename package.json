@@ -1,5 +1,5 @@
 {
-  "name": "react-markdown-js",
+  "name": "react-markdown-demisto",
   "version": "1.0.1",
   "description": "Markdown to React Component converter",
   "main": "lib/index.js",
@@ -58,10 +58,10 @@
     "markdown",
     "react"
   ],
-  "author": "Alexander <alexkuz@gmail.com> (http://kuzya.org/)",
+  "author": "Demisto",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/alexkuz/markdown-react-js/issues"
+    "url": "https://github.com/demisto/markdown-react-js/issues"
   },
-  "homepage": "https://github.com/alexkuz/markdown-react-js"
+  "homepage": "https://github.com/demisto/markdown-react-js"
 }
