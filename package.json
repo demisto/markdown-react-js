@@ -1,6 +1,6 @@
 {
   "name": "react-markdown-demisto",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Markdown to React Component converter",
   "main": "lib/index.js",
   "directories": {
